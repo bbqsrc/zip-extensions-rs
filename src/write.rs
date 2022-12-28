@@ -62,11 +62,13 @@ impl<W: Write + io::Seek> ZipWriterExtensions for ZipWriter<W> {
                     let mut f = File::open(&entry_path)?;
                     f.read_to_end(&mut buffer)?;
                     let relative_path = make_relative_path(&directory, &entry_path);
+                    #[allow(deprecated)]
                     self.start_file_from_path(&relative_path, options)?;
                     self.write_all(buffer.as_ref())?;
                     buffer.clear();
                 } else if entry_metadata.is_dir() {
                     let relative_path = make_relative_path(&directory, &entry_path);
+                    #[allow(deprecated)]
                     self.add_directory_from_path(&relative_path, options)?;
                     paths_queue.push(entry_path.clone());
                 }
