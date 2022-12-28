@@ -116,7 +116,7 @@ impl<R: Read + io::Seek> ZipArchiveExtensions for ZipArchive<R> {
                 let mut buffer: Vec<u8> = Vec::new();
                 let _bytes_read = next.read_to_end(&mut buffer)?;
                 let extracted_file_path = target_directory.join(sanitized_name);
-                file_write_all_bytes(extracted_file_path, buffer.as_ref(), true)?;
+                file_write_all_bytes(&extracted_file_path, buffer.as_ref(), true)?;
             }
         }
 
@@ -131,11 +131,7 @@ impl<R: Read + io::Seek> ZipArchiveExtensions for ZipArchive<R> {
     ) -> ZipResult<()> {
         let mut buffer: Vec<u8> = Vec::new();
         self.extract_file_to_memory(file_number, &mut buffer)?;
-        file_write_all_bytes(
-            destination_file_path.to_path_buf(),
-            buffer.as_ref(),
-            overwrite,
-        )?;
+        file_write_all_bytes(destination_file_path, buffer.as_ref(), overwrite)?;
         Ok(())
     }
 

@@ -1,10 +1,10 @@
 use std::fs::File;
 use std::io;
 use std::io::{Error, ErrorKind, Write};
-use std::path::{Component, PathBuf};
+use std::path::{Component, Path, PathBuf};
 
 /// Writes all bytes to a file.
-pub fn file_write_all_bytes(path: PathBuf, bytes: &[u8], overwrite: bool) -> io::Result<usize> {
+pub fn file_write_all_bytes(path: &Path, bytes: &[u8], overwrite: bool) -> io::Result<usize> {
     if path.exists() && !overwrite {
         return Err(Error::new(
             ErrorKind::AlreadyExists,
@@ -17,7 +17,7 @@ pub fn file_write_all_bytes(path: PathBuf, bytes: &[u8], overwrite: bool) -> io:
 }
 
 /// Returns a relative path from one path to another.
-pub(crate) fn make_relative_path(root: &PathBuf, current: &PathBuf) -> PathBuf {
+pub(crate) fn make_relative_path(root: &Path, current: &Path) -> PathBuf {
     let mut result = PathBuf::new();
     let root_components = root.components().collect::<Vec<Component>>();
     let current_components = current.components().collect::<Vec<_>>();
